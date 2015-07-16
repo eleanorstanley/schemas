@@ -47,14 +47,19 @@ patients have phenotypes that are diseases outside this context.
 record Disease {
 
   /**
-  The diagnosis, defined through an OntologyTerm.  e.g. colon cancer
+  The diagnosis, defined through an OntologyTerm. e.g. colon cancer, DOID_219
   */
   OntologyTerm disease;
 
   /**
-  The stage of the disease at diagnosis.  This is not update to reflect
+  The stage of the disease at diagnosis.  This is not updated to reflect
   progression of the disease, which is recorded in the clinical data.
   e.g. stage IV.
+  [Eagle: Stage IV of what staging system? Before the staging system was defined
+  but not the stage, now we have the stage but not the system. Am I missing 
+  something, are both not required? If you only want one term maybe the example
+  should be: TNM staging system, T2]
+
   */
   OntologyTerm stageAtDiagnosis;
 
@@ -73,13 +78,13 @@ record Disease {
   */
   union { null, string } dateTimeDiagnosis = null;
 
-  /* TODO: need to link to clincal data. Reference to clinical working group
+  /* TODO: need to link to clinical data. Reference to clinical working group
   */
   /* TODO: need keyword/value table, also human notes */
 }
 
 /**
-Record of phenotypes observed in an individual, which maybe independent of a a
+Record of phenotypes observed in an individual, which maybe independent of a
 disease diagnosis.  Phenotype-disease links are complex as this is a process
 performed by clinicians, presentations can be atypical and phenotypes
 unrelated to an individual diagnosis are present.  We also want to record
@@ -88,7 +93,7 @@ phenotypes in absences of a diagnosis.
 record Phenotype {
 
   /**
-  The phenotype, defined through an OntologyTerm.
+  The phenotype, defined through an OntologyTerm. e.g. Dyspnea, HP_0002094
   */
   OntologyTerm phenotype;
   
@@ -103,7 +108,7 @@ record Phenotype {
   */
   union { null, string } dateTimeIdentified = null;
 
-  /* TODO: need to link to clincal data. Reference to clinical working group
+  /* TODO: need to link to clinical data. Reference to clinical working group
   */
   /* TODO: need keyword/value table, also human notes */
 }
@@ -114,6 +119,10 @@ type, value and unit, as well as an associated dateTime value. This could be
 numerical values with a unit, or observations defined through ontologies.
 
 For example body height, body weight, BMI.
+
+  [Eagle: patients can be case or control in context of the project for 
+  which they are a part of. Would that be captured here?]
+
 */
 record Observation {
 
@@ -129,6 +138,9 @@ record Observation {
 
   /**
   The unit of the observation; e.g. for numeric values.
+  [Eagle: do you want to recommend using the Unit Ontology, 
+  https://code.google.com/p/unit-ontology/]
+
   */
   union { null, string } unit = null;
 
@@ -153,10 +165,9 @@ record Observation {
 /**
 Interventions are e.g. medical treatments.  This is a summary of the clinical
 information intended to be used in basic analysis when clinical information
-may not be avalable.
-
-TODO: This could be physical, psychological, or pharmaceutical, could
-       examples be provided to clarify the information to be captured here.
+may not be avalable. This could be physical (medical procedure, SIO_001024), 
+psychological (cognitive behavior, NBO_0000607), or pharmaceutical (drug, 
+CHEBI_23888).
 */
 record Intervention {
 
@@ -329,7 +340,7 @@ record Sample {
 
   /**
   The ids of the individuals this sample was derived from.  Multiple ids are
-  allowed,as a sample maybe pooled from multiple individuals.
+  allowed, as a sample maybe pooled from multiple individuals.
   */
   array<string> individualIds;
 
